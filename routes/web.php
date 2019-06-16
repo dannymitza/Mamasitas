@@ -10,7 +10,26 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+/*
 Route::get('/', function () {
-    return view('welcome');
+    echo "Hey, hey hey";
+});
+Route::get('parts/', 'Parts@index');
+*/
+Route::domain('api.localhost')->group(function () {
+    Route::get('/', function () {
+       echo "API Subdomain";
+    });
+
+	Route::get('parts/', 'Parts@index');
+});
+Route::domain('helpdesk.localhost')->group(function () {
+    Route::get('/', function () {
+       echo "HelpDesk Subdomain";
+    });
+});
+Route::domain('localhost')->group(function () {
+    Route::get('/', function () {
+       echo "Main Domain";
+    });
 });

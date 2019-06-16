@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 class Parts extends Controller
 {
-    public class index(){
+    public function index(){
 		echo "Salut";
 	}
 }
