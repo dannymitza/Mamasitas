@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Database\DatabaseManager as DB;
 
 
 class Parts extends Controller
@@ -13,20 +12,29 @@ class Parts extends Controller
     	if(count($query) == 0){
 		return response()->json($query)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
     	} else {
-    		abort(404);
+    		return response()->json(array("error" => "No parts found with SAP Code: " . $sap))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
     	}
 	}
     public function get($sap){
     	$query = \App\DBParts::where('SAP', $sap)->get();
     	if(count($query) > 0){
-			return response()->json(\App\DBParts::where('SAP', $sap)->get())->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
-		} else {
-			abort(404);
+			return response()->json(array(["data" =>$query], array(["status" => "accepted"])))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+		} elseif(count($query) == 0) {
+    		return response()->json(array("error" => "No part found with SAP Code: " . $sap . " has been found."))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
 		}
 	}
 
 	public function getSAP($sap){
-		return response()->json(\App\DBParts::where('SAP', $sap)->get("SAP"))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+    	$query = \App\DBParts::where('SAP', $sap)->get();
+    	if(count($query) > 0){
+    		if($query->sap != null){
+				return response()->json(array(["data" => $query], array(["status" => "accepted"])))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+			} elseif ($query->sap == null){
+    		return response()->json(array("error" => "No " . $sap . " code defined."))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+			}
+		} elseif(count($query) == 0) {
+    		return response()->json(array("error" => "No part found with SAP Code: " . $sap . " has been found."))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+		}
 	}
 
 	public function getBoxQty($sap){
@@ -56,4 +64,5 @@ class Parts extends Controller
 	public function getMatInfo($sap){
 		return response()->json(\App\DBParts::where('SAP', $sap)->get(["Material", "Veneer"]))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
 	}
+
 }
