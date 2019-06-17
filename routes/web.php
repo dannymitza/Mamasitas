@@ -21,7 +21,16 @@ Route::domain('api.localhost')->group(function () {
        echo "API Subdomain";
     });
 
-	Route::get('parts/', 'Parts@index');
+  Route::get('parts/get/all', 'Parts@index');
+  Route::get('part/get/{sap}', 'Parts@get');
+  Route::get('part/get/{sap}/sap', 'Parts@getSAP');
+  Route::get('part/get/{sap}/boxQty', 'Parts@getBoxQty');
+  Route::get('part/get/{sap}/palletQty', 'Parts@getPalletQty');
+  Route::get('part/get/{sap}/backupQty', 'Parts@getBackupQty');
+  Route::get('part/get/{sap}/SLoc', 'Parts@getProductStorageLoc');
+  Route::get('part/get/{sap}/plant', 'Parts@getProductPlant');
+  Route::get('part/get/{sap}/costCenter', 'Parts@getCostCenter');
+  Route::get('part/get/{sap}/matInfo', 'Parts@getMatInfo');
 });
 Route::domain('helpdesk.localhost')->group(function () {
     Route::get('/', function () {
