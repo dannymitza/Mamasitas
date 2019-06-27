@@ -24,6 +24,7 @@ class Parts extends Migration
             $table->integer('backupQuantity');
             $table->integer('prodStorageLoc');
             $table->integer('prodPlant');
+            $table->integer('workplaceStorageLoc');
             $table->integer('costCenter');
         });
     }
