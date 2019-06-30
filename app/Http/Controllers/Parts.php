@@ -72,7 +72,7 @@ class Parts extends Controller
 	public function getMFBFInfo($sap){
 		$output = array();
 		$query = \App\DBParts::where('SAP', $sap)->first();
-		//$query->makeHidden(["id", "boxQuantity", "palletQuantity", "backupQuantity"]);
+		$query->makeHidden(["id", "boxQuantity", "palletQuantity", "backupQuantity"]);
 		if($query->QuantityInUse == "box"){
 			$quantity = $query->boxQuantity;
 		} elseif($query->QuantityInUse == "pallet"){
