@@ -71,7 +71,7 @@ class Parts extends Controller
 
 	public function getMFBFInfo($sap){
 		$output = array();
-		$query = \App\DBParts::where('SAP', $sap)->get();
+		$query = \App\DBParts::where('SAP', $sap)->first();
 		//$query->makeHidden(["id", "boxQuantity", "palletQuantity", "backupQuantity"]);
 		if($query->QuantityInUse == "box"){
 			$quantity = $query->boxQuantity;
@@ -81,8 +81,15 @@ class Parts extends Controller
 			$quantity = $query->backupQuantity;
 		}
 
-
-		//return response()->json($query)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+		$output = array(
+			"SAP" => $sap,
+			"Quantity" => $quantity,
+			"Material" => $query->Material . " " . $query->Veneer . " " . $query->carline,
+			"StorageLocation" => $query->getProductStorageLoc,
+			"Plant" => $query->prodPlant
+		);
+		
+		return response()->json($output)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
 	}
 
 }
