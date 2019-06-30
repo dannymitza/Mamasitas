@@ -65,4 +65,24 @@ class Parts extends Controller
 		return response()->json(\App\DBParts::where('SAP', $sap)->get(["Material", "Veneer"]))->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
 	}
 
+	public function setMatQuantity($sap, $quantity){
+		$updateQuantity = \App\DBParts::where('SAP', $sap)->update(["QuantityInUse" => $quantity]);
+	}
+
+	public function getMFBFInfo($sap){
+		$output = array();
+		$query = \App\DBParts::where('SAP', $sap)->get();
+		//$query->makeHidden(["id", "boxQuantity", "palletQuantity", "backupQuantity"]);
+		if($query->QuantityInUse == "box"){
+			$quantity = $query->boxQuantity;
+		} elseif($query->QuantityInUse == "pallet"){
+			$quantity = $query->palletQuantity;
+		} elseif($query->QuantityInUse == "backup"){
+			$quantity = $query->backupQuantity;
+		}
+
+
+		//return response()->json($query)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+	}
+
 }
