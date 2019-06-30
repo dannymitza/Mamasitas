@@ -31,7 +31,9 @@ Route::domain('api.localhost')->group(function () {
   Route::get('part/get/{sap}/plant', 'Parts@getProductPlant');
   Route::get('part/get/{sap}/costCenter', 'Parts@getCostCenter');
   Route::get('part/get/{sap}/matInfo', 'Parts@getMatInfo');
+
   Route::get('part/get/{sap}/MFBF', 'Parts@getMFBFInfo');
+  Route::get('part/get/{sap}/MB1A', 'Parts@getMB1AInfo');
 
   Route::get('part/set/{sap}/quantity/{quantity}', 'Parts@setMatQuantity');
 });

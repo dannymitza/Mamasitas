@@ -85,11 +85,29 @@ class Parts extends Controller
 			"SAP" => $sap,
 			"Quantity" => $quantity,
 			"Material" => $query->Material . " " . $query->Veneer . " " . $query->carline,
-			"StorageLocation" => $query->getProductStorageLoc,
+			"StorageLocation" => $query->prodStorageLoc,
 			"Plant" => $query->prodPlant
 		);
 		
 		return response()->json($output)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
 	}
 
+	public function getMB1AInfo($sap){
+		$output = array();
+		$query = \App\DBParts::where('SAP', $sap)->first();
+		//$query->makeHidden(["id", "boxQuantity", "palletQuantity", "backupQuantity"]);
+
+		$output = array(
+			"SAP" => $sap,
+			"Quantity" => 1,
+			"Material" => $query->Material . " " . $query->Veneer . " " . $query->carline,
+			"StorageLocation" => $query->prodStorageLoc,
+			"Plant" => $query->prodPlant,
+			"CostCenter" => $query->costCenter,
+			"Reason" => 6,
+			"HeaderText" => "Production SCRAP"
+		);
+		
+		return response()->json($output)->setStatusCode(Response::HTTP_OK, Response::$statusTexts[Response::HTTP_OK])->header('Content-Type', 'application/json');
+	}
 }
